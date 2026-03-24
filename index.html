@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Generator</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Prompt Generator</h1>
+  <p class="subtitle">自然语言 → 结构化 Prompt，支持对话 / 图像 / 代码三种场景</p>
+
+  <div class="api-key-section">
+    <label>API Key</label>
+    <div class="api-key-row">
+      <input type="password" id="apiKey" placeholder="sk-ant-..." />
+    </div>
+  </div>
+
+  <div class="mode-tabs">
+    <button class="mode-tab active" data-mode="chat">
+      <span class="mode-icon">💬</span> 对话 AI
+    </button>
+    <button class="mode-tab" data-mode="image">
+      <span class="mode-icon">🎨</span> 图像生成
+    </button>
+    <button class="mode-tab" data-mode="code">
+      <span class="mode-icon">⌨️</span> 代码生成
+    </button>
+  </div>
+
+  <div class="input-section">
+    <label id="inputLabel">描述你想要的对话 AI 场景</label>
+    <textarea id="userInput" placeholder="例如：一个能帮用户做旅行规划的助手，要求专业且友好"></textarea>
+  </div>
+
+  <button class="generate-btn" data-mode="chat" id="generateBtn">生成 Prompt</button>
+
+  <div class="output-section" id="outputSection">
+    <div class="output-header">
+      <span>生成结果</span>
+      <button class="copy-btn" id="copyBtn">复制</button>
+    </div>
+    <div class="output-box" id="outputBox"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
