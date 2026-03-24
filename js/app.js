@@ -14,16 +14,22 @@ const tabs = document.querySelectorAll('.mode-tab');
 const inputEl = $('#userInput');
 const inputLabel = $('#inputLabel');
 const btn = $('#generateBtn');
-const outputSection = $('#outputSection');
 const outputBox = $('#outputBox');
+const outputPlaceholder = $('#outputPlaceholder');
 const copyBtn = $('#copyBtn');
 const apiKeyInput = $('#apiKey');
 const toastEl = $('#toast');
+const charCount = $('#charCount');
 
 // ── API Key 持久化 ──
 apiKeyInput.value = localStorage.getItem('claude_api_key') || '';
 apiKeyInput.addEventListener('change', () => {
   localStorage.setItem('claude_api_key', apiKeyInput.value.trim());
+});
+
+// ── 字数统计 ──
+inputEl.addEventListener('input', () => {
+  charCount.textContent = inputEl.value.length;
 });
 
 // ── 模式切换 ──
@@ -52,8 +58,9 @@ async function handleGenerate() {
   if (!userText) { showToast('请输入描述内容'); return; }
 
   btn.disabled = true;
-  btn.innerHTML = '生成中<span class="loading-dots"></span>';
-  outputSection.classList.add('visible');
+  btn.innerHTML = '<span class="loading-dots">生成中</span>';
+
+  if (outputPlaceholder) outputPlaceholder.style.display = 'none';
   outputBox.textContent = '';
 
   try {
@@ -67,7 +74,9 @@ async function handleGenerate() {
     outputBox.textContent = '错误: ' + e.message;
   } finally {
     btn.disabled = false;
-    btn.textContent = '生成 Prompt';
+    btn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      生成`;
   }
 }
 
@@ -79,7 +88,7 @@ inputEl.addEventListener('keydown', (e) => {
 // ── 复制结果 ──
 copyBtn.addEventListener('click', () => {
   const text = outputBox.textContent;
-  if (!text) return;
+  if (!text || text === '结果将在这里显示...') return;
   navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'));
 });
 
